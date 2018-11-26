@@ -101,19 +101,19 @@ public class App {
         String requestBodyString = JsonUtils.toJsonString(openRequest);
         System.out.println("服务器-收到请求报文-toJSONString:" + requestBodyString);
 
-        System.out.println("服务器-验签开始");
-        if (!SignUtils.verify(openRequest)) {
-            System.out.println("验签失败");
-        } else {
-            System.out.println("验签成功");
-        }
-
         JSONObject serverArgs = openRequest.getArgs();
         cEncryptContant = serverArgs.getString("data");
         System.out.println("服务器-收到客户端的加密请求报文:" + cEncryptContant);
         String bDecryptContant = securityUtils.decryptText(cEncryptContant, publicKeyAs);
         System.out.println("服务器-使用公钥解密:" + bDecryptContant);
-        System.out.println("服务器-业务处理开始" + bDecryptContant);
+        
+        System.out.println("服务器-验签开始");
+        if (!SignUtils.verify(openRequest)) {
+            System.out.println("验签失败");
+        } else {
+            System.out.println("验签成功");
+            System.out.println("服务器-业务处理开始" + bDecryptContant);
+        }
 
 
 //        JSONObject responseJson = new JSONObject();
